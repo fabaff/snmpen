@@ -4,13 +4,8 @@ import argparse
 
 import pytest
 
-from snmpen.helpers import (
-    community_type,
-    port_type,
-    retries_type,
-    target_to_output_filename,
-    target_type,
-)
+from snmpen.helpers import (community_type, port_type, retries_type,
+                            target_to_output_filename, target_type)
 
 
 class TestCommunityType:

@@ -2,13 +2,9 @@
 
 import pytest
 
-from snmpen.output import (
-    _collect_sections,
-    _normalized_scalar,
-    _render_text_dict,
-    _render_text_list,
-    render_output_text,
-)
+from snmpen.output import (_collect_sections, _normalized_scalar,
+                           _render_text_dict, _render_text_list,
+                           render_output_text)
 
 
 class TestNormalizedScalar:
