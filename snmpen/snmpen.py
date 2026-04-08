@@ -9,23 +9,51 @@ import sys
 import traceback
 from datetime import datetime, timedelta
 
-from pysnmp.hlapi.v3arch.asyncio import (CommunityData, ContextData,
-                                         ObjectIdentity, ObjectType,
-                                         SnmpEngine, Udp6TransportTarget,
-                                         UdpTransportTarget, get_cmd, next_cmd,
-                                         set_cmd)
+from pysnmp.hlapi.v3arch.asyncio import (
+    CommunityData,
+    ContextData,
+    ObjectIdentity,
+    ObjectType,
+    SnmpEngine,
+    Udp6TransportTarget,
+    UdpTransportTarget,
+    get_cmd,
+    next_cmd,
+    set_cmd,
+)
 from pysnmp.proto.rfc1902 import OctetString
 from pysnmp.smi import builder, view
 
-from .helpers import (community_type, load_project_metadata, port_type,
-                      retries_type, target_to_output_filename, target_type)
+from .helpers import (
+    community_type,
+    load_project_metadata,
+    port_type,
+    retries_type,
+    target_to_output_filename,
+    target_type,
+)
 from .output import print_output, render_output_rich_text, render_output_text
-from .types import (DEVICE_STATUSES, DEVICE_TYPES, FS_TYPES, IF_STATUSES,
-                    STORAGE_TYPES, TCP_STATES)
-from .utils import (extract_job_attr, format_endpoint, get_ip_string,
-                    get_mac_string, is_null, number_to_human_size,
-                    resolve_target_addresses, timeticks_to_dhm,
-                    timeticks_to_seconds, truncate_to_twidth, value_to_string)
+from .types import (
+    DEVICE_STATUSES,
+    DEVICE_TYPES,
+    FS_TYPES,
+    IF_STATUSES,
+    STORAGE_TYPES,
+    TCP_STATES,
+)
+from .utils import (
+    extract_job_attr,
+    format_endpoint,
+    get_ip_string,
+    get_mac_string,
+    is_null,
+    number_to_human_size,
+    resolve_target_addresses,
+    timeticks_to_dhm,
+    timeticks_to_seconds,
+    truncate_to_twidth,
+    value_to_string,
+)
 
 signal.signal(signal.SIGINT, lambda s, f: sys.exit(0))
 
