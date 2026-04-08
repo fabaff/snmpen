@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.0.1 2026-04-08
+- Add tests
+
 ## 1.0 2026-04-07
 - Clean git history for first public release
 - Switch to hachling
