@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "snmpen"
+version = "1.0.0"
+description = "SNMP Enumerator"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [
+  { name = "Fabian Affolter", email = "fabian@affolter-engineering.ch" }
+]
+dependencies = [
+  "humanize>=4.0",
+  "pysnmp-mibs",
+  "pysnmp>=7.1.22",
+  "rich>=14.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/fabaff/snmpen"
+
+[project.scripts]
+snmpen = "snmpen.snmpen:main"
+
+[tool.snmpen]
+copyright = "Copyright (c) 2019-2026"
+
+[tool.hatch.build.targets.wheel]
+packages = ["snmpen"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/snmpen",
+  "/README.md",
+  "/CHANGELOG.md",
+  "/pyproject.toml",
+]
