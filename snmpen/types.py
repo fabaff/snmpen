@@ -1,113 +1,94 @@
-"""MIB-related types and mappings for SNMP operations."""
+"""MIB-related types and mappings for SNMP operations.
 
-import re
+Mappings are defined statically from RFC MIB definitions so runtime imports from
+external MIB packages are not required.
+"""
 
-from pysnmp.smi import builder, view
+IF_STATUSES = {
+    1: "up",
+    2: "down",
+    3: "testing",
+}
 
-mibBuilder = builder.MibBuilder()
-mibView = view.MibViewController(mibBuilder)
-mibBuilder.load_modules(
-    "IF-MIB", "RFC1213-MIB", "HOST-RESOURCES-MIB", "HOST-RESOURCES-TYPES"
-)
+TCP_STATES = {
+    1: "closed",
+    2: "listen",
+    3: "synSent",
+    4: "synReceived",
+    5: "established",
+    6: "finWait1",
+    7: "finWait2",
+    8: "closeWait",
+    9: "lastAck",
+    10: "closing",
+    11: "timeWait",
+    12: "deleteTCB",
+}
 
-(ifAdminStatus_mib,) = mibBuilder.import_symbols("IF-MIB", "ifAdminStatus")
-IF_STATUSES = {int(v): str(k) for k, v in ifAdminStatus_mib.syntax.namedValues.items()}
+STORAGE_TYPES = {
+    "1.3.6.1.2.1.25.2.1.1": "Other",
+    "1.3.6.1.2.1.25.2.1.2": "Ram",
+    "1.3.6.1.2.1.25.2.1.3": "Virtual Memory",
+    "1.3.6.1.2.1.25.2.1.4": "Fixed Disk",
+    "1.3.6.1.2.1.25.2.1.5": "Removable Disk",
+    "1.3.6.1.2.1.25.2.1.6": "Floppy Disk",
+    "1.3.6.1.2.1.25.2.1.7": "Compact Disc",
+    "1.3.6.1.2.1.25.2.1.8": "Ram Disk",
+    "1.3.6.1.2.1.25.2.1.9": "Flash Memory",
+    "1.3.6.1.2.1.25.2.1.10": "Network Disk",
+}
 
-(tcpConnState_mib,) = mibBuilder.import_symbols("RFC1213-MIB", "tcpConnState")
-TCP_STATES = {int(v): str(k) for k, v in tcpConnState_mib.syntax.namedValues.items()}
+FS_TYPES = {
+    "1.3.6.1.2.1.25.3.9.1": "Other",
+    "1.3.6.1.2.1.25.3.9.2": "Unknown",
+    "1.3.6.1.2.1.25.3.9.3": "BerkeleyFFS",
+    "1.3.6.1.2.1.25.3.9.4": "Sys5FS",
+    "1.3.6.1.2.1.25.3.9.5": "Fat",
+    "1.3.6.1.2.1.25.3.9.6": "HPFS",
+    "1.3.6.1.2.1.25.3.9.7": "HFS",
+    "1.3.6.1.2.1.25.3.9.8": "MFS",
+    "1.3.6.1.2.1.25.3.9.9": "NTFS",
+    "1.3.6.1.2.1.25.3.9.10": "VNode",
+    "1.3.6.1.2.1.25.3.9.11": "Journaled",
+    "1.3.6.1.2.1.25.3.9.12": "iso9660",
+    "1.3.6.1.2.1.25.3.9.13": "RockRidge",
+    "1.3.6.1.2.1.25.3.9.14": "NFS",
+    "1.3.6.1.2.1.25.3.9.15": "Netware",
+    "1.3.6.1.2.1.25.3.9.16": "AFS",
+    "1.3.6.1.2.1.25.3.9.17": "DFS",
+    "1.3.6.1.2.1.25.3.9.18": "Appleshare",
+    "1.3.6.1.2.1.25.3.9.19": "RFS",
+    "1.3.6.1.2.1.25.3.9.20": "DGCFS",
+    "1.3.6.1.2.1.25.3.9.21": "BFS",
+    "1.3.6.1.2.1.25.3.9.22": "FAT32",
+    "1.3.6.1.2.1.25.3.9.23": "LinuxExt2",
+}
 
+DEVICE_TYPES = {
+    "1.3.6.1.2.1.25.3.1.1": "Other",
+    "1.3.6.1.2.1.25.3.1.2": "Unknown",
+    "1.3.6.1.2.1.25.3.1.3": "Processor",
+    "1.3.6.1.2.1.25.3.1.4": "Network",
+    "1.3.6.1.2.1.25.3.1.5": "Printer",
+    "1.3.6.1.2.1.25.3.1.6": "Disk Storage",
+    "1.3.6.1.2.1.25.3.1.7": "Video",
+    "1.3.6.1.2.1.25.3.1.8": "Audio",
+    "1.3.6.1.2.1.25.3.1.9": "Coprocessor",
+    "1.3.6.1.2.1.25.3.1.10": "Keyboard",
+    "1.3.6.1.2.1.25.3.1.11": "Modem",
+    "1.3.6.1.2.1.25.3.1.12": "Parallel Port",
+    "1.3.6.1.2.1.25.3.1.13": "Pointing",
+    "1.3.6.1.2.1.25.3.1.14": "Serial Port",
+    "1.3.6.1.2.1.25.3.1.15": "Tape",
+    "1.3.6.1.2.1.25.3.1.16": "Clock",
+    "1.3.6.1.2.1.25.3.1.17": "Volatile Memory",
+    "1.3.6.1.2.1.25.3.1.18": "Non Volatile Memory",
+}
 
-def _hr_type_map(mb, module, prefix, names, split_camel=True):
-    objs = mb.import_symbols(module, *names)
-    result = {}
-    for sym, obj in zip(names, objs):
-        oid = ".".join(str(x) for x in obj.getName())
-        label = sym[len(prefix) :]
-        if split_camel:
-            label = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", label)
-        result[oid] = label
-    return result
-
-
-STORAGE_TYPES = _hr_type_map(
-    mibBuilder,
-    "HOST-RESOURCES-TYPES",
-    "hrStorage",
-    [
-        "hrStorageOther",
-        "hrStorageRam",
-        "hrStorageVirtualMemory",
-        "hrStorageFixedDisk",
-        "hrStorageRemovableDisk",
-        "hrStorageFloppyDisk",
-        "hrStorageCompactDisc",
-        "hrStorageRamDisk",
-        "hrStorageFlashMemory",
-        "hrStorageNetworkDisk",
-    ],
-)
-
-FS_TYPES = _hr_type_map(
-    mibBuilder,
-    "HOST-RESOURCES-TYPES",
-    "hrFS",
-    [
-        "hrFSOther",
-        "hrFSUnknown",
-        "hrFSBerkeleyFFS",
-        "hrFSSys5FS",
-        "hrFSFat",
-        "hrFSHPFS",
-        "hrFSHFS",
-        "hrFSMFS",
-        "hrFSNTFS",
-        "hrFSVNode",
-        "hrFSJournaled",
-        "hrFSiso9660",
-        "hrFSRockRidge",
-        "hrFSNFS",
-        "hrFSNetware",
-        "hrFSAFS",
-        "hrFSDFS",
-        "hrFSAppleshare",
-        "hrFSRFS",
-        "hrFSDGCFS",
-        "hrFSBFS",
-        "hrFSFAT32",
-        "hrFSLinuxExt2",
-    ],
-    split_camel=False,
-)
-
-DEVICE_TYPES = _hr_type_map(
-    mibBuilder,
-    "HOST-RESOURCES-TYPES",
-    "hrDevice",
-    [
-        "hrDeviceOther",
-        "hrDeviceUnknown",
-        "hrDeviceProcessor",
-        "hrDeviceNetwork",
-        "hrDevicePrinter",
-        "hrDeviceDiskStorage",
-        "hrDeviceVideo",
-        "hrDeviceAudio",
-        "hrDeviceCoprocessor",
-        "hrDeviceKeyboard",
-        "hrDeviceModem",
-        "hrDeviceParallelPort",
-        "hrDevicePointing",
-        "hrDeviceSerialPort",
-        "hrDeviceTape",
-        "hrDeviceClock",
-        "hrDeviceVolatileMemory",
-        "hrDeviceNonVolatileMemory",
-    ],
-)
-
-(hrDeviceStatus_mib,) = mibBuilder.import_symbols(
-    "HOST-RESOURCES-MIB", "hrDeviceStatus"
-)
 DEVICE_STATUSES = {
-    int(v): str(k) for k, v in hrDeviceStatus_mib.syntax.namedValues.items()
+    1: "unknown",
+    2: "running",
+    3: "warning",
+    4: "testing",
+    5: "down",
 }
