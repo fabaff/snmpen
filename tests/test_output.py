@@ -1,7 +1,5 @@
 """Unit tests for snmpen.output."""
 
-import pytest
-
 from snmpen.output import (
     _collect_sections,
     _normalized_scalar,

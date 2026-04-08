@@ -1,7 +1,5 @@
 """Unit tests for snmpen.utils."""
 
-import pytest
-
 from snmpen.utils import (
     format_endpoint,
     get_ip_string,

@@ -22,7 +22,6 @@ from pysnmp.hlapi.v3arch.asyncio import (
     set_cmd,
 )
 from pysnmp.proto.rfc1902 import OctetString
-from pysnmp.smi import builder, view
 
 from .helpers import (
     community_type,
@@ -51,7 +50,6 @@ from .utils import (
     resolve_target_addresses,
     timeticks_to_dhm,
     timeticks_to_seconds,
-    truncate_to_twidth,
     value_to_string,
 )
 
