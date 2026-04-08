@@ -2,10 +2,17 @@
 
 import pytest
 
-from snmpen.utils import (format_endpoint, get_ip_string, get_mac_string,
-                          is_null, number_to_human_size, timeticks_to_dhm,
-                          timeticks_to_seconds, truncate_to_twidth,
-                          value_to_string)
+from snmpen.utils import (
+    format_endpoint,
+    get_ip_string,
+    get_mac_string,
+    is_null,
+    number_to_human_size,
+    timeticks_to_dhm,
+    timeticks_to_seconds,
+    truncate_to_twidth,
+    value_to_string,
+)
 
 
 class TestTruncateToTwidth:
