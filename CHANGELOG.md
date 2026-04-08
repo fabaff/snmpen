@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.0.2 2026-04-09
+- Remove references to pysnmp-mibs
+
 ## 1.0.1 2026-04-08
 - Add tests
 
