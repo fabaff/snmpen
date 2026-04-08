@@ -25,7 +25,6 @@ from pysnmp.proto.rfc1902 import OctetString
 
 from .helpers import (
     community_type,
-    load_project_metadata,
     port_type,
     retries_type,
     target_to_output_filename,
@@ -822,17 +821,11 @@ async def run_enumeration(
 def main():
     """Parse command-line arguments and run SNMP enumeration."""
 
-    try:
-        metadata = load_project_metadata()
-    except RuntimeError as exc:
-        print(str(exc))
-        sys.exit(1)
-
-    script_name = metadata["name"]
-    script_version = metadata["version"]
-    script_description = metadata["description"]
-    script_copyright = metadata["copyright"]
-    script_author = metadata["author"]
+    script_name = "snmpen"
+    script_version = "1.0.2"
+    script_description = "SNMP Enumerator"
+    script_copyright = "Copyright (c) 2019-2026"
+    script_author = "Fabian Affolter <fabian@affolter-engineering.ch>"
 
     description_header = f"{script_name} {script_version} - {script_description}"
     if script_copyright:

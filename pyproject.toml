@@ -42,9 +42,6 @@ Homepage = "https://github.com/fabaff/snmpen"
 [project.scripts]
 snmpen = "snmpen.snmpen:main"
 
-[tool.snmpen]
-copyright = "Copyright (c) 2019-2026"
-
 [tool.hatch.build.targets.wheel]
 packages = ["snmpen"]
 
