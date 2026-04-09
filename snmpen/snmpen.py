@@ -836,7 +836,6 @@ def main():
     parser = argparse.ArgumentParser(
         prog=script_name,
         add_help=False,
-        color=True,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=description_header,
         epilog=(
