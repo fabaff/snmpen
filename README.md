@@ -10,6 +10,13 @@ Enummerations are happening against RFC1157-compliant systems. The heavy lifting
 $ pip install snmpen
 ```
 
+For Nix or NixOS users is a package available. Keep in mind that the lastest releases might only
+be present in the ``unstable`` channel.
+
+```bash
+ $ nix-env -iA nixos.snmpen
+```
+
 ## Usage
 
 The tools support IPv4 addresses, IPv6 addresses and FQDNs as input.
