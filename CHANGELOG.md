@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.0 2026-04-09
+- Clean-up
+
 ## 1.0.2 2026-04-09
 - Remove references to pysnmp-mibs
 - Remove gathering of meta information from pyproject.toml
