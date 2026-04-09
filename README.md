@@ -4,7 +4,7 @@ You know `snmpcheck`? Good, `snmpen` is doing the same. It's another enumerator 
 
 Enummerations are happening against RFC1157-compliant systems. The heavy lifting is done by `pysnmp`.
 
-## Setup
+## Installation
 
 ```bash
 $ pip install snmpen
